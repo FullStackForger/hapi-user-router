@@ -1,0 +1,10 @@
+{
+  "name": "hapi-user-router",
+  "version": "0.1.0",
+  "description": "plugin",
+  "main": "lib/login-plugin.js",
+  "peerDependencies": {
+    "bell": "^6.3",
+    "hoek": "^3.0"
+  }
+}
