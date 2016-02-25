@@ -1,0 +1,27 @@
+{
+	"env": "development",
+	"port": 3000,
+	"host": "localhost",
+	"auth": {
+		"session": {
+			"isSecure": false,
+			"password": "cookie_pass_for_iron_encrypt"
+		},
+		"twitter": {
+			"active": false,
+			"clientId": "app_client_id",
+			"clientSecret": "app_client_secret"
+		},
+		"facebook": {
+			"active": false,
+			"clientId": "app_client_id",
+			"clientSecret": "app_client_secret"
+		},
+		"status": {
+			"active": true
+		},
+		"email": {
+			"active": false
+		}
+	}
+}
