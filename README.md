@@ -52,7 +52,8 @@ Configuration should override one exported by `default.js`.
   }
 }
 ```
-Plugin will look for configuration at `server.app.config`.
+
+**Important:** Plugin will look for configuration at `server.app.config` so remember to pass expose configuration file under `server.app.config` before you register the plugin.
 
 You can pass handler method by overriding default authentication `handler`:
 ```
@@ -60,3 +61,12 @@ auth.twitter.handler = function(request, reply) {
   return reply.redirect('/');
 }
 ```
+
+## Provided examples
+
+Before your run any of provided examples, there are few steps you have to make:
+
+1. Register twitter application - one registered application is enough to run all of the examples
+2. Update config.json with authentication credentials - as in previous point, one is enough for all examples
+3. Run `npm install` - run it from the main directory
+4. Run demo with: `node <example>.js` - you should run in from the `example` folder
