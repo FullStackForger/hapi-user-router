@@ -53,11 +53,18 @@ Configuration should override one exported by `default.js`.
 }
 ```
 
+### `server.app.config`
+
 **Important:** Plugin will look for configuration at `server.app.config` so remember to pass expose configuration file under `server.app.config` before you register the plugin.
 
-You can pass handler method by overriding default authentication `handler`:
+**Note:** It will change when I find better way of passing configuration into registered plugin with both (1) regular `server.register` method and (2) registration with `glue` manifest configs
+
+### Custom handlers
+
+You can overwrite default successful authentication `handler` by
 ```
 auth.twitter.handler = function(request, reply) {
+  // setup cookies, store credentials, etc.
   return reply.redirect('/');
 }
 ```
