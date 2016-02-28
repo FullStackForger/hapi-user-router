@@ -1,4 +1,11 @@
 'use strict';
+/* --------------------------------
+Before your run this example
+1. Register twitter application
+2. Update config.json with authentication credentials
+3. Run `npm install`
+4. Run demo with: `node server-with-cookie.js`
+---------------------------------- */
 const
 	Hapi = require('hapi'),
 	Boom = require('boom'),
@@ -10,15 +17,15 @@ const
 
 let uuid = 1       // Use seq instead of proper unique identifiers for demo only
 
+// twitter successful authentication handler method, we will use to override default one
 function handleTwitterLogin(request, reply) {
-
-	//Just store the third party credentials in the session as an example. You could do something
+	//Store the third party credentials in the session as an example. You could do something
 	//more useful here - like loading or setting up an account (social signup).
 	const sid = String(++uuid)
 	request.server.app.cache.set(sid, request.auth.credentials.profile, 0, (err) => {
 		if (err) return reply(err)
 		request.cookieAuth.set({sid: sid})
-		return reply('<pre>' + JSON.stringify(request.auth.credentials, null, 4) + '</pre>')
+		//return reply('<pre>' + JSON.stringify(request.auth.credentials, null, 4) + '</pre>')
 		return reply.redirect('/')
 	})
 }
@@ -37,7 +44,7 @@ const manifest = {
 		},{
 			plugin: '../lib/login-plugin.js',
 			options: {
-				routes: { prefix: '/test' }
+				routes: { prefix: '/user' }
 			}
 		}
 	]
@@ -46,6 +53,8 @@ const manifest = {
 const options = {
 	relativeTo: __dirname,
 	preRegister: function (server, callback) {
+		// override default authentication handler
+		config.auth.twitter.handler = handleTwitterLogin
 		// make config available for the plugin using 'preRegister' hook
 		// todo: might not be the best way to expose config to app but unlike other suggested methods this one just works
 		server.app.config = config
@@ -70,7 +79,7 @@ Glue.compose(manifest, options, (err, server) => {
 	server.auth.strategy('session', 'cookie', true, {
 		cookie: config.auth.session.cookie,
 		password: config.auth.session.password,
-		//redirectTo: '/login/facebook', // redirect url if there is no session
+		redirectTo: '/user/login/twitter', // redirect url if there is no session
 		isSecure: config.auth.session.isSecure,
 		validateFunc: function (request, session, callback) {
 			cache.get(session.sid, (err, cached) => {
@@ -104,5 +113,3 @@ Glue.compose(manifest, options, (err, server) => {
 		console.log('Server running at:', server.info.uri)
 	})
 })
-
-
